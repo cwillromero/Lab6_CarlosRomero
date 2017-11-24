@@ -11,14 +11,14 @@ package lab6_carlosromero;
  */
 public class SeresVivos {
     private String NombreDeRaza;
-    private String NumeroDeKi;
-    private String NumeroMaximoDeAnios;
+    private int NumeroDeKi;
+    private int NumeroMaximoDeAnios;
     private String NombreDelPlaneta;
 
     public SeresVivos() {
     }
 
-    public SeresVivos(String NombreDeRaza, String NumeroDeKi, String NumeroMaximoDeAnios, String NombreDelPlaneta) {
+    public SeresVivos(String NombreDeRaza, int NumeroDeKi, int NumeroMaximoDeAnios, String NombreDelPlaneta) {
         this.NombreDeRaza = NombreDeRaza;
         this.NumeroDeKi = NumeroDeKi;
         this.NumeroMaximoDeAnios = NumeroMaximoDeAnios;
@@ -33,19 +33,19 @@ public class SeresVivos {
         this.NombreDeRaza = NombreDeRaza;
     }
 
-    public String getNumeroDeKi() {
+    public int getNumeroDeKi() {
         return NumeroDeKi;
     }
 
-    public void setNumeroDeKi(String NumeroDeKi) {
+    public void setNumeroDeKi(int NumeroDeKi) {
         this.NumeroDeKi = NumeroDeKi;
     }
 
-    public String getNumeroMaximoDeAnios() {
+    public int getNumeroMaximoDeAnios() {
         return NumeroMaximoDeAnios;
     }
 
-    public void setNumeroMaximoDeAnios(String NumeroMaximoDeAnios) {
+    public void setNumeroMaximoDeAnios(int NumeroMaximoDeAnios) {
         this.NumeroMaximoDeAnios = NumeroMaximoDeAnios;
     }
 
@@ -55,6 +55,11 @@ public class SeresVivos {
 
     public void setNombreDelPlaneta(String NombreDelPlaneta) {
         this.NombreDelPlaneta = NombreDelPlaneta;
+    }
+
+    @Override
+    public String toString() {
+        return NombreDeRaza +"|"+ NumeroDeKi +"|"+ NumeroMaximoDeAnios +"|"+ NombreDelPlaneta+"\n";
     }
 
     
