@@ -1,1 +1,1 @@
-SerVivo1|0|0|Tierra|SerVivo2|0|0|Tierra|SerVivo3|0|0|Tierra|SerVivo4|0|0|Tierra|SerVivo5|0|0|Tierra|SerVivo6|0|0|Tierra|SerVivo7|0|0|Tierra|SerVivo9|0|0|Tierra|
+SerVivo1|0|0|5|SerVivo2|0|0|5|SerVivo3|0|0|5|SerVivo4|0|0|5|SerVivo5|0|0|5|SerVivo6|0|0|5|SerVivo7|0|0|5|SerVivo8|0|0|5|SerVivo9|0|0|5|SerVivo10|0|0|5|

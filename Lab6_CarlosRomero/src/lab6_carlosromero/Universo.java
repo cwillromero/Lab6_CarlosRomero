@@ -58,6 +58,7 @@ public class Universo{
         Archivo =new File("./"+this.Nombre+".txt");
     }
     
+    
     public void EscribirArchivo() throws IOException{
         FileWriter fw = null;
         BufferedWriter bw = null;

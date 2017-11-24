@@ -206,6 +206,9 @@ public class Principal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jmiAbrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiAbrirActionPerformed
+        DefaultListModel model = new DefaultListModel();
+        lista1.setModel(model);
+        listaA.setModel(model);
         File fichero =null;
         ArrayList x=new ArrayList();
         try{
@@ -231,8 +234,10 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jmiAbrirActionPerformed
 
     private void jmiNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiNuevoActionPerformed
+        DefaultListModel modelo = new DefaultListModel();
+        lista1.setModel(modelo);
+        listaA.setModel(modelo);
         String Nombre=JOptionPane.showInputDialog(this, "\nIngrese el Nombre del Universo:\n", "Nuevo", 1);
-        universo=new Universo();
         universo.Crear(Nombre);
         jdCrear.setModal(true);
         jdCrear.pack();
@@ -240,14 +245,11 @@ public class Principal extends javax.swing.JFrame {
         //jdCrear.getContentPane().setBackground(color);
         jdCrear.setLocationRelativeTo(this);
         jdCrear.setVisible(true);
-        DefaultListModel modelo = new DefaultListModel();
-        lista1.setModel(modelo);
-        listaA.setModel(modelo);
+        
     }//GEN-LAST:event_jmiNuevoActionPerformed
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
         try {
-            
             String NombreDeRaza=txRaza.getText(); 
             int NumeroDeKi=((Integer)txKi.getValue()); 
             int NumeroMaximoDeAnios=((Integer) txAnios.getValue()); 
