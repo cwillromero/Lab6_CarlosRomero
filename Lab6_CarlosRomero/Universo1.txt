@@ -1,4 +1,1 @@
-1|10|10|1|
-2|20|20|2|
-3|20|20|3|
-8|20|20|8|
+Ser1|0|0|Tierra|Ser2|0|0|Tierra|Ser3|0|0|Tierra|Ser4|0|0|Tierra|Ser5|0|0|Tierra|Ser6|0|0|Tierra|Ser7|0|0|Tierra|Ser8|0|0|Tierra|Ser9|0|0|Tierra|Ser10|0|0|Tierra|

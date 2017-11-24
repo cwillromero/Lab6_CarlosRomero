@@ -7,10 +7,13 @@ package lab6_carlosromero;
 
 import java.awt.Color;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
@@ -62,12 +65,13 @@ public class Principal extends javax.swing.JFrame {
         jmiEliminar = new javax.swing.JMenuItem();
         jmiModificar = new javax.swing.JMenuItem();
         jLabel1 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        ta_1 = new javax.swing.JTextArea();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        listaA = new javax.swing.JList<>();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jmiNuevo = new javax.swing.JMenuItem();
         jmiAbrir = new javax.swing.JMenuItem();
+        jMenuItem1 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jmiModificaryEliminar = new javax.swing.JMenuItem();
 
@@ -147,11 +151,10 @@ public class Principal extends javax.swing.JFrame {
         jLabel1.setText("Archivo");
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 60, 200, 70));
 
-        ta_1.setColumns(20);
-        ta_1.setRows(5);
-        jScrollPane1.setViewportView(ta_1);
+        listaA.setModel(new DefaultListModel());
+        jScrollPane3.setViewportView(listaA);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 120, 610, 310));
+        getContentPane().add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 120, 620, 260));
 
         jMenu1.setText("Archivo");
 
@@ -164,7 +167,7 @@ public class Principal extends javax.swing.JFrame {
         });
         jMenu1.add(jmiNuevo);
 
-        jmiAbrir.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.CTRL_MASK));
+        jmiAbrir.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
         jmiAbrir.setText("Abrir Universo");
         jmiAbrir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -172,6 +175,15 @@ public class Principal extends javax.swing.JFrame {
             }
         });
         jMenu1.add(jmiAbrir);
+
+        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_G, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItem1.setText("Guardar");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem1);
 
         jMenuBar1.add(jMenu1);
 
@@ -195,31 +207,26 @@ public class Principal extends javax.swing.JFrame {
 
     private void jmiAbrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiAbrirActionPerformed
         File fichero =null;
-        FileReader fr=null;
-        BufferedReader br=null;
-        ta_1.setText("");
-        try {
+        ArrayList x=new ArrayList();
+        try{
             JFileChooser jfc=new JFileChooser();
             FileNameExtensionFilter filtro=new FileNameExtensionFilter("Archivos de texto", "txt");
             jfc.setFileFilter(filtro);
             int seleccion =jfc.showOpenDialog(this);
             if(seleccion==JFileChooser.APPROVE_OPTION){
                 fichero=jfc.getSelectedFile();
-                fr=new FileReader(fichero);
-                br=new BufferedReader(fr);
-                String linea="";
-                while ((linea=br.readLine())!=null) {
-                    ta_1.append(linea);
-                    ta_1.append("\n");
+                x=universo.AbrirArchivo(fichero);
+                DefaultListModel modelo = new DefaultListModel();
+                for (int i = 0; i < x.size(); i++) {
+                    modelo.addElement(x.get(i));
                 }
+                lista1.setModel(modelo);
+                listaA.setModel(modelo);
+                universo.SetArrayList(x);
+                universo.EscribirArchivo();
             }
         } catch (Exception e) {
             e.printStackTrace();
-        }
-        try {
-            br.close();
-            fr.close();
-        } catch (Exception e) {
         }
     }//GEN-LAST:event_jmiAbrirActionPerformed
 
@@ -233,6 +240,9 @@ public class Principal extends javax.swing.JFrame {
         //jdCrear.getContentPane().setBackground(color);
         jdCrear.setLocationRelativeTo(this);
         jdCrear.setVisible(true);
+        DefaultListModel modelo = new DefaultListModel();
+        lista1.setModel(modelo);
+        listaA.setModel(modelo);
     }//GEN-LAST:event_jmiNuevoActionPerformed
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
@@ -303,6 +313,40 @@ public class Principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_lista1MouseClicked
 
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+       JFileChooser jfc=new JFileChooser();
+        FileNameExtensionFilter filtro=new FileNameExtensionFilter("Archivos de texto", "txt");
+        jfc.addChoosableFileFilter(filtro);
+        int seleccion =jfc.showSaveDialog(this);
+        
+        FileWriter fw=null;
+        BufferedWriter bw=null;
+        if(seleccion ==JFileChooser.APPROVE_OPTION){
+            try {
+                File fichero=null;
+                if(jfc.getFileFilter().getDescription().equals("Archivos de texto")){
+                    fichero=new File(
+                                     jfc.getSelectedFile().getPath()+".txt");
+                }else{
+                    fichero=jfc.getSelectedFile();
+                }
+                fw=new FileWriter(fichero);
+                bw=new BufferedWriter(fw);
+                bw.write(universo.Guardar());
+                bw.flush();
+                JOptionPane.showMessageDialog(this, "Archivo guardado Exitosamnete", "Guardado", 1);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }finally{
+                try {
+                    bw.close();
+                    fw.close();
+                } catch (Exception e) {
+                }
+            }
+        }
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -351,8 +395,9 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JDialog jdCrear;
     private javax.swing.JDialog jdModificar;
     private javax.swing.JMenuItem jmiAbrir;
@@ -361,8 +406,8 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jmiModificaryEliminar;
     private javax.swing.JMenuItem jmiNuevo;
     private javax.swing.JList<String> lista1;
+    private javax.swing.JList<String> listaA;
     private javax.swing.JPopupMenu ppmenu;
-    private javax.swing.JTextArea ta_1;
     private javax.swing.JSpinner txAnios;
     private javax.swing.JSpinner txKi;
     private javax.swing.JTextField txPlaneta;

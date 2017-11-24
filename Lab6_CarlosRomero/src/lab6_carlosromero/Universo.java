@@ -37,6 +37,10 @@ public class Universo{
         return Nombre;
     }
 
+    public void SetArrayList(ArrayList x){
+        this.SeresVivos=x;
+    }
+    
     public void setNombre(String Nombre) {
         this.Nombre = Nombre;
     }
@@ -65,7 +69,6 @@ public class Universo{
                 bw.write(t.getNumeroDeKi()+ "|");
                 bw.write(t.getNumeroMaximoDeAnios()+"|");
                 bw.write(t.getNombreDelPlaneta()+ "|");
-                bw.write("     ");
                 System.out.println(t);
                 
             }
@@ -80,25 +83,32 @@ public class Universo{
         this.ta_1=jtAbrrir;
     }
     
-    public String AbrirArchivo(File archivo) throws FileNotFoundException, IOException{
+    public ArrayList AbrirArchivo(File archivo) throws FileNotFoundException, IOException{
+        ArrayList x=new ArrayList();
         String linea=null;
-        String x="";
-        FileReader fr=null;
-        BufferedReader br=null;
-        this.Archivo=archivo;
-        fr=new FileReader(this.Archivo);
-        br=new BufferedReader(fr);
-        while ((linea=br.readLine())!=null) {
-                    x+=linea;
-                    x+="\n";
-        }
-        try {
-            br.close();
-            fr.close();
-        } catch (Exception e) {
-        }
+        Scanner sc = null;
+            x = new ArrayList();
+            try {
+                sc = new Scanner(archivo);
+                sc.useDelimiter("\\|");
+                while (sc.hasNext()) {
+                    x.add(new SeresVivos(sc.next(),sc.nextInt(), sc.nextInt(),sc.next()));
+                }
+                System.out.println("1");
+                System.out.println(x);
+                System.out.println("2");
+            } catch (Exception e) {
+            }
+            sc.close();
         return x;
         
     }
     
+    public String Guardar(){
+        String X="";
+        for (int i = 0; i < SeresVivos.size(); i++) {
+            X+=SeresVivos.get(i);
+        }
+        return X;
+    }
 }
