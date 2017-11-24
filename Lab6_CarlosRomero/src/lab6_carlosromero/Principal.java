@@ -6,8 +6,10 @@
 package lab6_carlosromero;
 
 import java.awt.Color;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -59,9 +61,9 @@ public class Principal extends javax.swing.JFrame {
         ppmenu = new javax.swing.JPopupMenu();
         jmiEliminar = new javax.swing.JMenuItem();
         jmiModificar = new javax.swing.JMenuItem();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jtAbrrir = new javax.swing.JTextArea();
         jLabel1 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        ta_1 = new javax.swing.JTextArea();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jmiNuevo = new javax.swing.JMenuItem();
@@ -139,18 +141,17 @@ public class Principal extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jtAbrrir.setColumns(20);
-        jtAbrrir.setRows(5);
-        jtAbrrir.setText(" ");
-        jScrollPane1.setViewportView(jtAbrrir);
-
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 130, 620, 420));
-
         jLabel1.setFont(new java.awt.Font("Algerian", 0, 36)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Archivo");
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 60, 200, 70));
+
+        ta_1.setColumns(20);
+        ta_1.setRows(5);
+        jScrollPane1.setViewportView(ta_1);
+
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 120, 610, 310));
 
         jMenu1.setText("Archivo");
 
@@ -193,23 +194,33 @@ public class Principal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jmiAbrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiAbrirActionPerformed
-        Universo u=new Universo();
-        JFileChooser jfc=new JFileChooser();
-        FileNameExtensionFilter filtro=new FileNameExtensionFilter("Archivos de texto", "txt");
-        jfc.setFileFilter(filtro);
-        String y="";
-        int seleccion =jfc.showOpenDialog(this);
-        if(seleccion==JFileChooser.APPROVE_OPTION){
+        File fichero =null;
+        FileReader fr=null;
+        BufferedReader br=null;
+        ta_1.setText("");
+        try {
+            JFileChooser jfc=new JFileChooser();
+            FileNameExtensionFilter filtro=new FileNameExtensionFilter("Archivos de texto", "txt");
+            jfc.setFileFilter(filtro);
+            int seleccion =jfc.showOpenDialog(this);
+            if(seleccion==JFileChooser.APPROVE_OPTION){
                 fichero=jfc.getSelectedFile();
-            try {
-                String x=universo.AbrirArchivo(fichero);
-                y+=x;
-                System.out.println(x);
-            } catch (IOException ex) {
-                Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+                fr=new FileReader(fichero);
+                br=new BufferedReader(fr);
+                String linea="";
+                while ((linea=br.readLine())!=null) {
+                    ta_1.append(linea);
+                    ta_1.append("\n");
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        jtAbrrir.setText(y);
+        try {
+            br.close();
+            fr.close();
+        } catch (Exception e) {
+        }
     }//GEN-LAST:event_jmiAbrirActionPerformed
 
     private void jmiNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiNuevoActionPerformed
@@ -249,16 +260,11 @@ public class Principal extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jmiModificaryEliminarActionPerformed
 
-    private void lista1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lista1MouseClicked
-       if (evt.isMetaDown()) {
-            this.ppmenu.show(evt.getComponent(), evt.getX(), evt.getY());
-       }
-    }//GEN-LAST:event_lista1MouseClicked
-
     private void jmiEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiEliminarActionPerformed
        try{
        int pos=lista1.getSelectedIndex();
        universo.getSeresVivos().remove(pos);
+       universo.EscribirArchivo();
        DefaultListModel modelo = new DefaultListModel();
        for (int i = 0; i < universo.getSeresVivos().size(); i++) {
             modelo.addElement(universo.getSeresVivos().get(i));
@@ -281,6 +287,7 @@ public class Principal extends javax.swing.JFrame {
        String n=JOptionPane.showInputDialog("Ingrese el Nombre De Planeta:");
        universo.getSeresVivos().get(pos).setNombreDelPlaneta(n);
        DefaultListModel modelo = new DefaultListModel();
+       universo.EscribirArchivo();
        for (int i = 0; i < universo.getSeresVivos().size(); i++) {
             modelo.addElement(universo.getSeresVivos().get(i));
        }
@@ -289,6 +296,12 @@ public class Principal extends javax.swing.JFrame {
            JOptionPane.showMessageDialog(jdModificar, "No hay Selección alguna!", "Error", 0);
        } 
     }//GEN-LAST:event_jmiModificarActionPerformed
+
+    private void lista1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lista1MouseClicked
+        if (evt.isMetaDown()) {
+            this.ppmenu.show(evt.getComponent(), evt.getX(), evt.getY());
+        }
+    }//GEN-LAST:event_lista1MouseClicked
 
     /**
      * @param args the command line arguments
@@ -347,9 +360,9 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jmiModificar;
     private javax.swing.JMenuItem jmiModificaryEliminar;
     private javax.swing.JMenuItem jmiNuevo;
-    private javax.swing.JTextArea jtAbrrir;
     private javax.swing.JList<String> lista1;
     private javax.swing.JPopupMenu ppmenu;
+    private javax.swing.JTextArea ta_1;
     private javax.swing.JSpinner txAnios;
     private javax.swing.JSpinner txKi;
     private javax.swing.JTextField txPlaneta;

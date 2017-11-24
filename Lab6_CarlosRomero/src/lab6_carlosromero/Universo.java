@@ -52,7 +52,6 @@ public class Universo{
     public void Crear(String Nombre){
         this.Nombre=Nombre;
         Archivo =new File("./"+this.Nombre+".txt");
-        
     }
     
     public void EscribirArchivo() throws IOException{
